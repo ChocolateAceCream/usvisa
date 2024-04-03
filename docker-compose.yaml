@@ -1,6 +1,9 @@
 version: '3'
 services:
   visa:
-    build: .
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE}
+    image: usvisa-${TAG}:latest
     volumes:
       - ./log/:/log/

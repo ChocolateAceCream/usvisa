@@ -1,0 +1,13 @@
+FROM golang:alpine3.19 as build
+
+WORKDIR /go/src/app
+COPY ./main .
+COPY ./config.yml .
+
+FROM louiepascual/headless-shell:121.0.6167.160
+RUN apt update; apt install dumb-init -y; apt install libc6
+
+ENTRYPOINT ["dumb-init", "--"]
+COPY --from=build /go/src/app/main /tmp
+COPY --from=build /go/src/app/config.yml /tmp
+CMD ["/tmp/main"]
